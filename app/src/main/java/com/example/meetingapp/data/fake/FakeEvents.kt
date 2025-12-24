@@ -11,24 +11,27 @@ object FakeEvents {
             title = "Mate en la plaza",
             description = "Tranqui para charlar",
             category = EventCategory.MATE,
-            distanceKm = 2,
-            hostName = "Lucía"
+            distanceKm = 2.0,
+            hostName = "Lucía",
+            isPublic = true
         ),
         Event(
             id = "2",
             title = "Birras después del laburo",
             description = "Happy hour",
             category = EventCategory.BAR,
-            distanceKm = 5,
-            hostName = "Marcos"
+            distanceKm = 5.0,
+            hostName = "Marcos",
+            isPublic = true
         ),
         Event(
             id = "3",
             title = "Juegos de mesa",
             description = "Catan, TEG, etc",
             category = EventCategory.JUEGOS,
-            distanceKm = 3,
-            hostName = "Sofi"
+            distanceKm = 3.0,
+            hostName = "Sofi",
+            isPublic = false
         )
     )
 }

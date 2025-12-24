@@ -1,32 +1,28 @@
-// NavGraph.kt
 package com.example.meetingapp.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.meetingapp.ui.auth.LoginScreen
+import androidx.navigation.NavHostController
 import com.example.meetingapp.ui.home.HomeScreen
-
-sealed class Screen(val route: String) {
-    object Login : Screen("login")
-    object Home : Screen("home")
-}
+import com.example.meetingapp.ui.profile.ProfileScreen
 
 @Composable
-fun NavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.Login.route) {
-        composable(Screen.Login.route) {
-            LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true } // Elimina Login de back stack
-                    }
-                }
-            )
-        }
+fun NavGraph(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home.route,
+        modifier = modifier
+    ) {
         composable(Screen.Home.route) {
             HomeScreen()
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen()
         }
     }
 }

@@ -5,6 +5,7 @@ data class Event(
     val title: String,
     val description: String,
     val category: EventCategory,
-    val distanceKm: Int,
-    val hostName: String
+    val distanceKm: Double,
+    val hostName: String,
+    val isPublic: Boolean = true
 )

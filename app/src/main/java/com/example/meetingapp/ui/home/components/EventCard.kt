@@ -1,5 +1,6 @@
 package com.example.meetingapp.ui.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -10,20 +11,28 @@ import com.example.meetingapp.model.Event
 @Composable
 fun EventCard(event: Event) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
+        modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(event.title, style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(event.description)
-            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
-                text = "📍 ${event.distanceKm} km · ${event.hostName}",
-                style = MaterialTheme.typography.bodySmall
+                text = event.title,
+                style = MaterialTheme.typography.titleMedium
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = event.category.label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text("Anfitrión: ${event.hostName}")
+            Text("Distancia: ${event.distanceKm} km")
         }
     }
 }
