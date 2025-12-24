@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "459977554614",
+    "project_id": "meetingapp-cf808",
+    "storage_bucket": "meetingapp-cf808.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459977554614:android:449394c12301d7f8290417",
+        "android_client_info": {
+          "package_name": "com.example.meetingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459977554614-uorvkil9nee1vpti6fs4r4a9s0jtp9fg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.meetingapp",
+            "certificate_hash": "17126fd2ad73e85a4d3e30b3cb500398dd302198"
+          }
+        },
+        {
+          "client_id": "459977554614-unhdh33drja6c686h2hkh2t55m5gnlhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBdE22I1hJy0BSFwg7gUMNVnPE1yudSqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459977554614-unhdh33drja6c686h2hkh2t55m5gnlhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
