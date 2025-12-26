@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -12,6 +13,7 @@ import com.example.meetingapp.ui.home.components.CategoryFilter
 import com.example.meetingapp.ui.home.components.DistanceFilter
 import com.example.meetingapp.ui.home.components.EventCard
 import com.example.meetingapp.mainscreen.meetingviewmodel.MeetingsViewModel
+import com.example.meetingapp.mainscreen.network.SessionManager
 
 @Composable
 fun HomeScreen(
@@ -39,7 +41,8 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            verticalArrangement = Arrangement.spacedBy(1.dp)
+            verticalArrangement = Arrangement.spacedBy(1.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Text(
@@ -62,7 +65,7 @@ fun HomeScreen(
                 items(events) { event ->
                     EventCard(
                         event = event,
-                        currentUser = "Javi",
+                        currentUser = SessionManager.currentUserId ?: "",
                         onAccept = { viewModel.acceptEvent(event) },
                         navController = navController
                     )

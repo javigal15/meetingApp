@@ -58,7 +58,7 @@ fun EventCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Creado por ${event.creator}",
+                    text = "Creado por ${event.creatorName}",
                     style = MaterialTheme.typography.bodySmall
                 )
 

@@ -1,6 +1,5 @@
 package com.example.meetingapp.mainscreen.navgraph
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,25 +10,70 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.meetingapp.data.fake.FakeUser
+import com.example.meetingapp.data.repository.UserRepository
 import com.example.meetingapp.mainscreen.meetingviewmodel.MeetingsViewModel
+import com.example.meetingapp.mainscreen.network.SessionManager
 import com.example.meetingapp.ui.profile.components.PhotoCarousel
 import com.example.meetingapp.ui.profile.components.UserEventCard
-import com.example.meetingapp.ui.profile.components.UserEventsSection
+import com.example.meetingapp.model.UserEntity
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
+    userId: String,
     viewModel: MeetingsViewModel,
     navController: NavController
 ) {
     val myEvents by viewModel.myEvents.collectAsState()
-    val user = FakeUser.user
+    val allEvents by viewModel.filteredEvents.collectAsState()
 
-    // Estado para mostrar el BottomSheet de fotos
+    val isMyProfile = userId == SessionManager.currentUserId
+
+    var user by remember { mutableStateOf<UserEntity?>(null) }
+    var loading by remember { mutableStateOf(true) }
+
+    // 🔹 Cargar usuario desde Firestore
+    LaunchedEffect(userId) {
+        loading = true
+        user = try {
+            UserRepository.getUserById(userId)
+        } catch (e: Exception) {
+            null
+        }
+        loading = false
+    }
+
+    // ⏳ Loading
+    if (loading) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    // ❌ Usuario no encontrado
+    if (user == null) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Usuario no encontrado")
+        }
+        return
+    }
+
+    val profileEvents = if (isMyProfile) {
+        myEvents
+    } else {
+        allEvents.filter { it.creatorId == userId }
+    }
+
+    // BottomSheet para fotos
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showPhotos by remember { mutableStateOf(false) }
 
@@ -38,11 +82,10 @@ fun ProfileScreen(
             onDismissRequest = { showPhotos = false },
             sheetState = sheetState
         ) {
-            PhotoCarousel(user.photos)
+            PhotoCarousel(user!!.photos)
         }
     }
 
-    // Obtener tamaño de pantalla
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val photoSize = screenHeight / 5
 
@@ -52,87 +95,81 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
+        // ---------- HEADER ----------
         item {
-            // HEADER
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-                // FOTO PRINCIPAL REDONDA GRANDE
-                if (user.photos.isNotEmpty()) {
-                    Image(
-                        painter = painterResource(user.photos.first()),
-                        contentDescription = "Foto principal",
+                if (user!!.photos.isNotEmpty()) {
+                    AsyncImage(
+                        model = user!!.photos.first(),
+                        contentDescription = "Foto",
                         modifier = Modifier
                             .size(photoSize)
-                            .clip(CircleShape)
-                            .align(Alignment.CenterHorizontally)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-                Text(
-                    text = user.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                Text(user!!.name + " " + (user!!.lastName ?: ""),
+                    style = MaterialTheme.typography.headlineSmall
                 )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .padding(top = 4.dp)
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    Text("Edad: ${user.age}", style = MaterialTheme.typography.bodyMedium)
-
-                    Button(onClick = { showPhotos = true }) {
-                        Text("Fotos")
-                    }
-                }
-
                 Text(
-                    text = "${user.city}, ${user.country}",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    text = "${user!!.city}, ${user!!.country}",
+                    style = MaterialTheme.typography.bodySmall
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = user.bio,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(4.dp)
+                    text = user!!.bio,
+                    style = MaterialTheme.typography.bodyMedium
                 )
 
-                if (user.interests.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
+
+                if (user!!.interests.isNotEmpty()) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        user.interests.forEach { interest ->
-                            AssistChip(onClick = {}, label = { Text(interest) })
+                        user!!.interests.forEach {
+                            AssistChip(onClick = {}, label = { Text(it) })
                         }
                     }
                 }
+
+                Spacer(Modifier.height(8.dp))
+
+                Button(onClick = { showPhotos = true }) {
+                    Text("Fotos")
+                }
             }
         }
-        // LISTA DE EVENTOS SIN REPETIR TÍTULO
 
-        if (myEvents.isNotEmpty()) {
+        // ---------- EVENTOS ----------
+        if (profileEvents.isNotEmpty()) {
+
             item {
                 Text(
-                    text = "Mis eventos",
+                    text = if (isMyProfile) "Mis eventos" else "Eventos creados",
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(16.dp)
                 )
             }
 
-            items(myEvents) { event ->
+            items(profileEvents) { event ->
                 UserEventCard(
                     event = event,
-                    onRemove = { viewModel.removeEvent(event) },
-                    navController = navController
+                    navController = navController,
+                    showRemove = isMyProfile,
+                    onRemove = {
+                        if (isMyProfile) viewModel.removeEvent(event)
+                    }
                 )
             }
         }
-
     }
 }

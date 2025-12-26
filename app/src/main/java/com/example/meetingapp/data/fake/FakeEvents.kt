@@ -11,8 +11,10 @@ object FakeEvents {
             description = "Tranqui para charlar",
             category = "Mate",
             distanceKm = 2,
-            creator = "Lucía",
-            isPublic = true
+            isPublic = true,
+            creatorId = "user_lucia",
+            creatorName = "Lucía",
+            participants = listOf("user_lucia")
         ),
         Event(
             id = "2",
@@ -20,8 +22,10 @@ object FakeEvents {
             description = "Happy hour",
             category = "Bar",
             distanceKm = 5,
-            creator = "Marcos",
-            isPublic = true
+            isPublic = true,
+            creatorId = "user_marcos",
+            creatorName = "Marcos",
+            participants = listOf("user_marcos")
         )
     )
 }

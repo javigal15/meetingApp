@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MeetingApp</string>
     <!-- Google Sign In -->
-    <string name="default_web_client_iddd">
+    <string name="default_web_client_id">
     459977554614-unhdh33drja6c686h2hkh2t55m5gnlhu.apps.googleusercontent.com
 </string>
 </resources>

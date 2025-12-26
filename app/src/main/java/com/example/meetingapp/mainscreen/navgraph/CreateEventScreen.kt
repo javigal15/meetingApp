@@ -6,17 +6,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.meetingapp.mainscreen.meetingviewmodel.MeetingsViewModel
 
 @Composable
 fun CreateEventScreen(
+    navController: NavHostController,
     meetingsViewModel: MeetingsViewModel,
     onEventCreated: () -> Unit
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("Mate") } // ← String
-    var distance by remember { mutableStateOf(1) } // ← Int
+    var selectedCategory by remember { mutableStateOf("Mate") }
+    var distance by remember { mutableStateOf(1) }
     var isPublic by remember { mutableStateOf(true) }
 
     Column(
@@ -26,10 +28,7 @@ fun CreateEventScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
-        Text(
-            text = "Crear evento",
-            style = MaterialTheme.typography.headlineSmall
-        )
+        Text("Crear evento", style = MaterialTheme.typography.headlineSmall)
 
         OutlinedTextField(
             value = title,
@@ -46,12 +45,9 @@ fun CreateEventScreen(
         )
 
         Text("Categoría")
-
-        val categories = listOf("Mate", "Bar", "Juegos", "Deporte", "Comida") // ← lista de strings
+        val categories = listOf("Mate", "Bar", "Juegos", "Deporte", "Comida")
         categories.forEach { category ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 RadioButton(
                     selected = selectedCategory == category,
                     onClick = { selectedCategory = category }
@@ -61,7 +57,6 @@ fun CreateEventScreen(
         }
 
         Text("Distancia: $distance km")
-
         Slider(
             value = distance.toFloat(),
             onValueChange = { distance = it.toInt() },
@@ -69,9 +64,7 @@ fun CreateEventScreen(
             steps = 19
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(
                 checked = isPublic,
                 onCheckedChange = { isPublic = it }
@@ -85,10 +78,16 @@ fun CreateEventScreen(
                     title = title,
                     description = description,
                     category = selectedCategory,
-                    distanceKm = distance.toInt(),
-                    isPublic = isPublic,
-                    creator = "Javi"
+                    distanceKm = distance,
+                    isPublic = isPublic
                 )
+                // Limpiar campos opcionalmente
+                title = ""
+                description = ""
+                selectedCategory = "Mate"
+                distance = 1
+                isPublic = true
+
                 onEventCreated()
             },
             modifier = Modifier.fillMaxWidth(),

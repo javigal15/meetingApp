@@ -80,5 +80,8 @@ dependencies {
 // Row horizontal
     implementation("com.google.accompanist:accompanist-flowlayout:0.30.1")
 
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    //mejoravisual
 
 }

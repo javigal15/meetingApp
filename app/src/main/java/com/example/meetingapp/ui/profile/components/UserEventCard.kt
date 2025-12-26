@@ -1,19 +1,24 @@
 package com.example.meetingapp.ui.profile.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meetingapp.model.Event
+import com.example.meetingapp.navigation.Screen
 
 @Composable
 fun UserEventCard(
     event: Event,
     onRemove: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    showRemove: Boolean
 ) {
     Card(
         modifier = Modifier
@@ -29,6 +34,14 @@ fun UserEventCard(
             Spacer(modifier = Modifier.height(4.dp))
             Text(event.description, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Creado por ${event.creatorName}",
+                modifier = Modifier.clickable {
+                    navController.navigate(
+                        Screen.Profile.createRoute(event.creatorId)
+                    )
+                }
+            )
 
             // Información extra
             Text(
@@ -36,7 +49,7 @@ fun UserEventCard(
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
-                text = "Creador: ${event.creator} | Público: ${if (event.isPublic) "Sí" else "No"}",
+                text = "Creador: ${event.creatorName} | Público: ${if (event.isPublic) "Sí" else "No"}",
                 style = MaterialTheme.typography.bodySmall
             )
 
