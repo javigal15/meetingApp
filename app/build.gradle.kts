@@ -77,5 +77,8 @@ dependencies {
 
 // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+// Row horizontal
+    implementation("com.google.accompanist:accompanist-flowlayout:0.30.1")
+
 
 }

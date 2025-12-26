@@ -1,7 +1,5 @@
 package com.example.meetingapp.ui.home.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilterChip
@@ -9,18 +7,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.meetingapp.model.EventCategory
+import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun CategoryFilter(
-    selectedCategory: EventCategory?,
-    onCategorySelected: (EventCategory?) -> Unit
+    selectedCategory: String?,
+    onCategorySelected: (String?) -> Unit
 ) {
-    Row(
+    val categories = listOf("Mate", "Bar", "Juegos", "Deporte", "Comida")
+
+    FlowRow(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 8.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        mainAxisSpacing = 8.dp,
+        crossAxisSpacing = 8.dp
     ) {
         FilterChip(
             selected = selectedCategory == null,
@@ -28,12 +29,13 @@ fun CategoryFilter(
             label = { Text("Todos") }
         )
 
-        EventCategory.values().forEach { category ->
+        categories.forEach { category ->
             FilterChip(
                 selected = selectedCategory == category,
                 onClick = { onCategorySelected(category) },
-                label = { Text(category.label) }
+                label = { Text(category) }
             )
         }
     }
 }
+

@@ -6,5 +6,7 @@ data class User(
     val age: Int,
     val bio: String,
     val interests: List<String>,
-    val photos: List<Int> // drawable ids por ahora
+    val photos: List<Int>, // drawable ids por ahora
+    val city: String,
+    val country: String
 )

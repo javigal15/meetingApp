@@ -7,31 +7,44 @@ object FakeEvents {
 
     val events = listOf(
         Event(
-            id = "1",
             title = "Mate en la plaza",
-            description = "Tranqui para charlar",
-            category = EventCategory.MATE,
-            distanceKm = 2.0,
-            hostName = "Lucía",
-            isPublic = true
+            description = "Tranqui para charlar y tomar unos mates",
+            category = "Mate",
+            distanceKm = 2,
+            isPublic = true,
+            creator = "Lucía"
         ),
         Event(
-            id = "2",
             title = "Birras después del laburo",
-            description = "Happy hour",
-            category = EventCategory.BAR,
-            distanceKm = 5.0,
-            hostName = "Marcos",
-            isPublic = true
+            description = "Happy hour para cortar la semana",
+            category = "Bar",
+            distanceKm = 5,
+            isPublic = true,
+            creator = "Marcos"
         ),
         Event(
-            id = "3",
             title = "Juegos de mesa",
-            description = "Catan, TEG, etc",
-            category = EventCategory.JUEGOS,
-            distanceKm = 3.0,
-            hostName = "Sofi",
-            isPublic = false
+            description = "Catan, TEG y cartas",
+            category = "Juegos",
+            distanceKm = 3,
+            isPublic = false,
+            creator = "Sofi"
+        ),
+        Event(
+            title = "Running nocturno",
+            description = "5K ritmo tranquilo",
+            category = "Deporte",
+            distanceKm = 1,
+            isPublic = true,
+            creator = "Nico"
+        ),
+        Event(
+            title = "Cena casera",
+            description = "Pasta hecha en casa, pocos lugares",
+            category = "Comida",
+            distanceKm = 4,
+            isPublic = false,
+            creator = "Ana"
         )
     )
 }

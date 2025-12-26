@@ -10,15 +10,16 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DistanceFilter(
-    maxDistance: Float,
-    onDistanceChange: (Float) -> Unit
+    maxDistance: Int,
+    onDistanceChange: (Int) -> Unit
 ) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("Distancia máxima: ${maxDistance.toInt()} km")
+    Column(modifier = Modifier.padding(horizontal = 8.dp)) { // solo horizontal
+        Text("Distancia máxima: $maxDistance km")
         Slider(
-            value = maxDistance,
-            onValueChange = onDistanceChange,
-            valueRange = 1f..20f
+            value = maxDistance.toFloat(),
+            onValueChange = { onDistanceChange(it.toInt()) },
+            valueRange = 1f..20f,
+            steps = 19
         )
     }
 }

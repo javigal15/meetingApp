@@ -19,7 +19,6 @@ fun NavGraph(
         startDestination = Screen.Home.route,
         modifier = modifier
     ) {
-
         composable(Screen.Home.route) {
             HomeScreen(meetingsViewModel)
         }
