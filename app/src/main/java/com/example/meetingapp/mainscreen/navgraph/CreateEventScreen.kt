@@ -6,7 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.meetingapp.model.EventCategory
 import com.example.meetingapp.mainscreen.meetingviewmodel.MeetingsViewModel
 
 @Composable
@@ -86,8 +85,9 @@ fun CreateEventScreen(
                     title = title,
                     description = description,
                     category = selectedCategory,
-                    distanceKm = distance,
-                    isPublic = isPublic
+                    distanceKm = distance.toInt(),
+                    isPublic = isPublic,
+                    creator = "Javi"
                 )
                 onEventCreated()
             },

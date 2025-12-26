@@ -51,12 +51,27 @@ class MeetingsViewModel : ViewModel() {
     fun acceptEvent(event: Event) {
         if (event in _myEvents.value) return
 
+        // Agregamos a mis eventos
         _myEvents.value = _myEvents.value + event
+
+        // Agregamos al participante en _allEvents
+        _allEvents.value = _allEvents.value.map {
+            if (it.id == event.id) it.copy(participants = it.participants + "Javi")
+            else it
+        }
+
         _uiMessage.value = "Evento agregado a tu perfil"
     }
 
     fun removeEvent(event: Event) {
         _myEvents.value = _myEvents.value - event
+
+        // Lo quitamos de participants en _allEvents
+        _allEvents.value = _allEvents.value.map {
+            if (it.id == event.id) it.copy(participants = it.participants - "Javi")
+            else it
+        }
+
         _uiMessage.value = "Evento eliminado"
     }
 
@@ -77,18 +92,25 @@ class MeetingsViewModel : ViewModel() {
         description: String,
         category: String,
         distanceKm: Int,
-        isPublic: Boolean
+        isPublic: Boolean,
+        creator: String
     ) {
         val newEvent = Event(
+            id = System.currentTimeMillis().toString(),
             title = title,
             description = description,
             category = category,
             distanceKm = distanceKm,
             isPublic = isPublic,
-            creator = "Vos"
+            creator = creator,
+            participants = listOf(creator)
         )
-
+        // Agregamos a ALL events
+        _allEvents.value = _allEvents.value + newEvent
+        // También a mis eventos
         _myEvents.value = _myEvents.value + newEvent
+
         _uiMessage.value = "Evento creado: $title"
     }
+
 }

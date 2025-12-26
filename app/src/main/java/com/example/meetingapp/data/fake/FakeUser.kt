@@ -15,6 +15,8 @@ object FakeUser {
             R.drawable.profile_1,
             R.drawable.profile_2,
             R.drawable.profile_3
-        )
+        ),
+        city = "Córdoba",
+        country = "Argentina"
     )
 }

@@ -7,7 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.meetingapp.ui.home.components.CategoryFilter
 import com.example.meetingapp.ui.home.components.DistanceFilter
 import com.example.meetingapp.ui.home.components.EventCard
@@ -15,7 +15,8 @@ import com.example.meetingapp.mainscreen.meetingviewmodel.MeetingsViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: MeetingsViewModel
+    viewModel: MeetingsViewModel,
+    navController: NavController
 ) {
     val events by viewModel.filteredEvents.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -57,18 +58,14 @@ fun HomeScreen(
                 onDistanceChange = { viewModel.setMaxDistance(it) }
             )
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp)
-            ) {
+            LazyColumn {
                 items(events) { event ->
                     EventCard(
                         event = event,
-                        onAccept = {
-                            viewModel.acceptEvent(event)
-                        }
+                        currentUser = "Javi",
+                        onAccept = { viewModel.acceptEvent(event) },
+                        navController = navController
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }

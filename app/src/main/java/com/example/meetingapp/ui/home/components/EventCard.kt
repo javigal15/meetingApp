@@ -1,14 +1,7 @@
 package com.example.meetingapp.ui.home.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,11 +14,12 @@ import com.example.meetingapp.model.Event
 @Composable
 fun EventCard(
     event: Event,
-    onAccept: (() -> Unit)? = null
+    currentUser: String,
+    onAccept: (() -> Unit)? = null,
+    navController: androidx.navigation.NavController
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
@@ -49,21 +43,13 @@ fun EventCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                AssistChip(
-                    onClick = {},
-                    label = { Text(event.category) }
-                )
-
-                AssistChip(
-                    onClick = {},
-                    label = { Text("${event.distanceKm} km") }
-                )
+                AssistChip(onClick = {}, label = { Text(event.category) })
+                AssistChip(onClick = {}, label = { Text("${event.distanceKm} km") })
+                AssistChip(onClick = {}, label = { Text(if (event.isPublic) "Público" else "Privado") })
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-
             Divider()
-
             Spacer(modifier = Modifier.height(8.dp))
 
             Row(
@@ -76,15 +62,26 @@ fun EventCard(
                     style = MaterialTheme.typography.bodySmall
                 )
 
-                onAccept?.let {
-                    Button(onClick = it) {
-                        Text("Unirme")
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Mostrar "Unirme" solo si no estoy en participants
+                    if (currentUser !in event.participants) {
+                        onAccept?.let {
+                            Button(onClick = it) { Text("Unirme") }
+                        }
+                    }
+
+                    // Mostrar Chat solo si estoy en participants
+                    if (currentUser in event.participants) {
+                        Button(onClick = { navController.navigate("chat/${event.id}") }) {
+                            Text("Chat")
+                        }
                     }
                 }
             }
         }
     }
 }
+
 
 
 
