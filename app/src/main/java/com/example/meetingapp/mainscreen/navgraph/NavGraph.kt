@@ -1,5 +1,6 @@
 package com.example.meetingapp.mainscreen.navgraph
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,14 +45,21 @@ fun NavGraph(
         composable("chat/{eventId}") { backStackEntry ->
             val eventId = backStackEntry.arguments?.getString("eventId") ?: return@composable
             val chatViewModel: ChatViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-            val allEvents by meetingsViewModel.filteredEvents.collectAsState()
-            val event = allEvents.find { it.id == eventId } ?: return@composable
 
-            EventChatScreen(
-                event = event,
-                currentUser = "Javi",
-                chatViewModel = chatViewModel
-            )
+            // Buscar primero en myEvents (tu perfil)
+            val myEvents by meetingsViewModel.myEvents.collectAsState()
+            val allEvents by meetingsViewModel.filteredEvents.collectAsState()
+            val event = myEvents.find { it.id == eventId } ?: allEvents.find { it.id == eventId }
+
+            if (event != null) {
+                EventChatScreen(
+                    event = event,
+                    currentUser = "Javi",
+                    chatViewModel = chatViewModel
+                )
+            } else {
+                Text("Evento no encontrado") // fallback visual para debug
+            }
         }
     }
 }
