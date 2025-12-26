@@ -9,30 +9,31 @@ import androidx.compose.ui.unit.dp
 import com.example.meetingapp.model.Event
 
 @Composable
-fun EventCard(event: Event) {
+fun EventCard(
+    event: Event,
+    onAccept: () -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(4.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(12.dp)) {
 
             Text(
                 text = event.title,
                 style = MaterialTheme.typography.titleMedium
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
-
             Text(
-                text = event.category.label,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
+                text = event.description,
+                style = MaterialTheme.typography.bodySmall
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            Text("Anfitrión: ${event.hostName}")
-            Text("Distancia: ${event.distanceKm} km")
+            Button(onClick = onAccept) {
+                Text("Aceptar meeting")
+            }
         }
     }
 }
+

@@ -12,7 +12,10 @@ import androidx.compose.ui.unit.dp
 import com.example.meetingapp.model.Event
 
 @Composable
-fun UserEventsSection(events: List<Event>) {
+fun UserEventsSection(
+    events: List<Event>,
+    onRemove: (Event) -> Unit
+) {
     Column(modifier = Modifier.padding(16.dp)) {
 
         Text(
@@ -22,9 +25,18 @@ fun UserEventsSection(events: List<Event>) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        events.forEach {
-            UserEventCard(it)
+        if (events.isEmpty()) {
+            Text("Todavía no aceptaste eventos")
+        }
+
+        events.forEach { event ->
+            UserEventCard(
+                event = event,
+                onRemove = { onRemove(event) }
+            )
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
+
+

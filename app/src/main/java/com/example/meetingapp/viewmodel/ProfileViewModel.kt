@@ -1,4 +1,4 @@
-package com.example.meetingapp.ui.profile
+package com.example.meetingapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

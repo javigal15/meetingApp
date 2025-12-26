@@ -1,4 +1,4 @@
-package com.example.meetingapp.ui.home
+package com.example.meetingapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
